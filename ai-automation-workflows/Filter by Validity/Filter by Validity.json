@@ -1,0 +1,286 @@
+{
+  "name": "Filter by Validity",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        0
+      ],
+      "id": "37dbc3eb-0bba-4ef1-92e5-ab6ca1bc2adb",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        144,
+        0
+      ],
+      "id": "6f01fad0-8819-44cf-adca-2f5dd95ea08d",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "cold_emails_list - Sheet1 (1)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2010773502,
+          "mode": "list",
+          "cachedResultName": "cold_emails_list - Sheet1 (1)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        384,
+        16
+      ],
+      "id": "f784082a-6f4c-4785-9bb1-b3d407b903fa",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "577c7103-49ce-4712-9ae1-4dce5b1bec6e",
+              "leftValue": "={{ $('Original').item.json.email }}",
+              "rightValue": "={{ $json.Email }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        16
+      ],
+      "id": "7f2663d0-67b3-421a-bec2-9036e527b09b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "valid-655902-email-list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1011361954,
+          "mode": "list",
+          "cachedResultName": "valid-655902-email-list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "a19d5b67-c687-4dcd-9231-ba83194a1bf3",
+      "name": "Original",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "New_Cold_Email_Spreadsheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Business Name": "={{ $json['Business Name'] }}",
+            "Email": "={{ $json.Email }}",
+            "email_number": "={{ $json.email_number }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Business Name",
+              "displayName": "Business Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email_number",
+              "displayName": "email_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        816,
+        -80
+      ],
+      "id": "e0b63f92-fc19-48c3-a6d0-b1a52043daef",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Original",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Original": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a5479231-4b97-4c4f-b848-7f917d9d27a2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c56975295062d25bdbb52f0b9af12677fc2da8b3662b5c9a20985df235d19b9d"
+  },
+  "id": "LTJoSGVcw7hiKHCA",
+  "tags": []
+}

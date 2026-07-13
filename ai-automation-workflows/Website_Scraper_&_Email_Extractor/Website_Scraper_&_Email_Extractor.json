@@ -1,0 +1,435 @@
+{
+  "name": "Website_Scraper_&_Email_Extractor",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        144
+      ],
+      "id": "4f322b33-efef-42c8-9702-e6f701ed338f",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "google (2)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 486892232,
+          "mode": "list",
+          "cachedResultName": "google (2).csv",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "Pending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -272,
+        144
+      ],
+      "id": "9f652114-450a-4bf8-aa23-04b839b00efb",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        176,
+        144
+      ],
+      "id": "4900fedc-e746-4951-81bd-d6f138b099ce",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "google (2)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 486892232,
+          "mode": "list",
+          "cachedResultName": "google (2).csv",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get row(s) in sheet').item.json.row_number }}",
+            "Chatbot": "={{ $('Check the Chatbot').item.json.chatbotExists }}",
+            "Email": "={{ $json.emailsFound[0] }}",
+            "Status": "Done"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Chatbot",
+              "displayName": "Chatbot",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1296,
+        144
+      ],
+      "id": "fdd3678d-cbb4-4670-b306-40adbe72d113",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## website scraper and email extractor\nScrape the websites listed in Google Sheet and extract emails from them.",
+        "height": 480,
+        "width": 2112,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -640,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "8660219b-c7b3-428f-826a-6dc2d6994235",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.Website }}",
+        "responseFormat": "string",
+        "options": {
+          "followAllRedirects": true,
+          "ignoreResponseCode": true
+        }
+      },
+      "id": "6fc82c0a-44df-47a8-927b-413a21bb2a97",
+      "name": "Get the website HTML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ],
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: items[0].json.html contains the website's HTML content\n\nconst html = $input.first().json.data.toLowerCase();\n\n// Simple checks for chatbot presence by identifying common chatbot elements or keywords\nconst chatbotIndicators = [\n  'chatbot',               // common keyword in class/id/element\n  'livechat',              // popular live chat widget identifier\n  'intercom',              // Intercom chat widget\n  'tawk.to',               // Tawk.to chat widget script\n  'drift',                 // Drift chat widget\n  'zendesk chat',          // Zendesk chat\n  'olark',                 // Olark chat\n  'freshchat',             // Freshchat widget\n  'hubspot',               // HubSpot chat widget\n];\n\nconst chatbotExists = chatbotIndicators.some(indicator => html.includes(indicator));\n\nreturn [\n  {\n    json: {\n      chatbotExists\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "d4f54ad2-94cb-45a1-a524-0a7ed0cc9b1f",
+      "name": "Check the Chatbot",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4c25fab9-499a-4833-bc04-eef07d8c2b9f",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "Pending",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -48,
+        144
+      ],
+      "id": "ee5b3f2b-79b0-467d-bc09-59ff3413a310",
+      "name": "If the Status is Pending"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1ff83701-c109-4fd4-9680-76cbe74f906f",
+              "leftValue": "={{ $json.chatbotExists }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        848,
+        80
+      ],
+      "id": "cf3b5ed5-49ba-49d1-a680-29dc03300278",
+      "name": "If the Chatbot Doesn't exist"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: items[0].json.html contains the website's HTML content\n\nconst html = $('Get the website HTML').first().json.data.toLowerCase();\n// Email regex to find email addresses in the HTML\nconst emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}/g;\nconst emailsFound = html.match(emailRegex) || [];\n\nreturn [\n  {\n    json: {\n      emailsFound,\n      }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1072,
+        80
+      ],
+      "id": "8569aa95-dac2-4e01-ba7c-38ae393ebd1b",
+      "name": "Extract Email",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If the Status is Pending",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get the website HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get the website HTML": {
+      "main": [
+        [
+          {
+            "node": "Check the Chatbot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check the Chatbot": {
+      "main": [
+        [
+          {
+            "node": "If the Chatbot Doesn't exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If the Status is Pending": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If the Chatbot Doesn't exist": {
+      "main": [
+        [
+          {
+            "node": "Extract Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Email": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1ab3a681-7687-48b4-8614-7a1e4eb8aa9e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c56975295062d25bdbb52f0b9af12677fc2da8b3662b5c9a20985df235d19b9d"
+  },
+  "id": "ExJRWgqqejay1kgj",
+  "tags": []
+}
