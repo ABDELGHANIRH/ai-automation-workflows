@@ -1,0 +1,815 @@
+{
+  "name": "Email_Sender",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "IceBreaker_Generator_New",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1749020796,
+          "mode": "list",
+          "cachedResultName": "Ice_Breaker_Generator - dataset_leads-finder_2026-02-12_15-18-31-748",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "startIndex": "=2"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -320,
+        -352
+      ],
+      "id": "2daae2f6-d71c-4438-9fc6-9a4c5065428e",
+      "name": "Delete rows or columns from sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "IceBreaker_Generator_New",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1656421572,
+          "mode": "list",
+          "cachedResultName": "Follow-up",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "first_name": "={{ $json.first_name }}",
+            "last_name": "={{ $json.last_name }}",
+            "email": "={{ $json.email }}",
+            "First Subject": "={{ $json.Subject }}",
+            "Order": "={{ $json.Order }}",
+            "First Email": "={{ $json.EmailBody }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "first_name",
+              "displayName": "first_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "last_name",
+              "displayName": "last_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First Subject",
+              "displayName": "First Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First Email",
+              "displayName": "First Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Order",
+              "displayName": "Order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -544,
+        -352
+      ],
+      "id": "2fc97428-08b1-45e3-8e60-4ed75aae8a4b",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": 3
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -1216,
+        -160
+      ],
+      "id": "f6a8c673-9b9a-4363-a72e-0099635d6a07",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Order }}",
+                    "rightValue": "First",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bceeab18-18c8-40d5-bf18-8cfe2bae39b0"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fcf15161-7951-4adb-aea5-f9858fc93349",
+                    "leftValue": "={{ $json.Order }}",
+                    "rightValue": "Second",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "36432e8c-2ceb-46e7-88ca-80417ee6300f",
+                    "leftValue": "={{ $json.Order }}",
+                    "rightValue": "Third",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -992,
+        -176
+      ],
+      "id": "5f77053a-0907-43a5-93e4-8a5b7f846260",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "IceBreaker_Generator_New",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1749020796,
+          "mode": "list",
+          "cachedResultName": "Ice_Breaker_Generator - dataset_leads-finder_2026-02-12_15-18-31-748",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1440,
+        -160
+      ],
+      "id": "31e465fb-6148-4f69-8f8f-b6b82d548b1a",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 23
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1664,
+        -160
+      ],
+      "id": "e0675c83-6201-45f7-8d6d-d4f7f9263a8d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "fromEmail": "support@autowealthai.com",
+        "toEmail": "={{ $json.email }}",
+        "subject": "={{ $json.Subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.EmailBody }}",
+        "options": {
+          "appendAttribution": false,
+          "attachments": ""
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -768,
+        -352
+      ],
+      "id": "2af82d60-6772-4dc5-9e7c-5e8c91bfc4f3",
+      "name": "Support email",
+      "webhookId": "83f47cef-9179-4ecd-9618-2a96993fccdb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "founder@autowealthai.com",
+        "toEmail": "={{ $json.email }}",
+        "subject": "={{ $json.Subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.EmailBody }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -768,
+        -160
+      ],
+      "id": "4ed091d8-6b21-454f-9718-7d289b95fc67",
+      "name": "Founder email",
+      "webhookId": "485fab04-443a-46d1-a13d-f8bc0b9888ca",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "hello@autowealthai.com",
+        "toEmail": "={{ $json.email }}",
+        "subject": "={{ $json.Subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.EmailBody }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -768,
+        32
+      ],
+      "id": "f280cde4-6477-4f54-b701-cbf80e535e31",
+      "name": "Hello email",
+      "webhookId": "485fab04-443a-46d1-a13d-f8bc0b9888ca",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "IceBreaker_Generator_New",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1749020796,
+          "mode": "list",
+          "cachedResultName": "Ice_Breaker_Generator - dataset_leads-finder_2026-02-12_15-18-31-748",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "startIndex": "=2"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -320,
+        -160
+      ],
+      "id": "39cac51b-00b8-40fc-b7d8-e114604dacf5",
+      "name": "Delete rows or columns from sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "IceBreaker_Generator_New",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1656421572,
+          "mode": "list",
+          "cachedResultName": "Follow-up",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "first_name": "={{ $json.first_name }}",
+            "last_name": "={{ $json.last_name }}",
+            "email": "={{ $json.email }}",
+            "First Subject": "={{ $json.Subject }}",
+            "First Email": "={{ $json.EmailBody }}",
+            "Order": "={{ $json.Order }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "first_name",
+              "displayName": "first_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "last_name",
+              "displayName": "last_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First Subject",
+              "displayName": "First Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First Email",
+              "displayName": "First Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Order",
+              "displayName": "Order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -544,
+        -160
+      ],
+      "id": "aa25a7c0-b2fa-473c-b812-9bc85579b9bc",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "IceBreaker_Generator_New",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1749020796,
+          "mode": "list",
+          "cachedResultName": "Ice_Breaker_Generator - dataset_leads-finder_2026-02-12_15-18-31-748",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "startIndex": "=2"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -320,
+        32
+      ],
+      "id": "18ecb585-4c1e-4b08-b63d-7d8abdde2a2e",
+      "name": "Delete rows or columns from sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "<GOOGLE_SHEETS_ID>",
+          "mode": "list",
+          "cachedResultName": "IceBreaker_Generator_New",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1656421572,
+          "mode": "list",
+          "cachedResultName": "Follow-up",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/<GOOGLE_SHEETS_ID>/edit"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "first_name": "={{ $json.first_name }}",
+            "last_name": "={{ $json.last_name }}",
+            "email": "={{ $json.email }}",
+            "First Subject": "={{ $json.Subject }}",
+            "First Email": "={{ $json.EmailBody }}",
+            "Order": "={{ $json.Order }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "first_name",
+              "displayName": "first_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "last_name",
+              "displayName": "last_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First Subject",
+              "displayName": "First Subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First Email",
+              "displayName": "First Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Order",
+              "displayName": "Order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -544,
+        32
+      ],
+      "id": "a9e23863-b706-4eca-afc1-274557d0a90e",
+      "name": "Append row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLESHEETSOAUTH2API>"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Delete rows or columns from sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Support email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Founder email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Hello email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Support email": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Founder email": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hello email": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Delete rows or columns from sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Delete rows or columns from sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "045ab9c4-3825-4af3-8837-23f22b4e791b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c56975295062d25bdbb52f0b9af12677fc2da8b3662b5c9a20985df235d19b9d"
+  },
+  "id": "x5FtB4g5lNY98PxT",
+  "tags": [
+    {
+      "updatedAt": "2025-10-03T17:03:18.354Z",
+      "createdAt": "2025-10-03T17:03:18.354Z",
+      "id": "6AJGtUXgUwykHsmy",
+      "name": "outreach"
+    }
+  ]
+}

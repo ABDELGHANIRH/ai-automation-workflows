@@ -1,0 +1,2964 @@
+{
+  "name": "warm-up from auto to gmail",
+  "nodes": [
+    {
+      "parameters": {
+        "fromEmail": "support@autowealthai.com",
+        "toEmail": "={{ $('Code in JavaScript').item.json.Target_1 }}",
+        "subject": "={{ $json.output[0].subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output[0].body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        -480
+      ],
+      "id": "db9dd3f8-d6a4-416d-b8c1-8267bccfd49d",
+      "name": "Support email",
+      "webhookId": "83f47cef-9179-4ecd-9618-2a96993fccdb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "founder@autowealthai.com",
+        "toEmail": "={{ $('Code in JavaScript').item.json.Target_2 }}",
+        "subject": "={{ $json.output[1].subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output[1].body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        624
+      ],
+      "id": "5128f0c5-2d53-46c4-a3ec-f490c6b6e414",
+      "name": "Founder email",
+      "webhookId": "485fab04-443a-46d1-a13d-f8bc0b9888ca",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "hello@autowealthai.com",
+        "toEmail": "={{ $('Code in JavaScript').item.json.Target_3 }}",
+        "subject": "={{ $json.output[2].subject }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output[2].body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        1824
+      ],
+      "id": "232d1729-86ec-4e29-91a0-fc09662f4ce8",
+      "name": "Hello email",
+      "webhookId": "485fab04-443a-46d1-a13d-f8bc0b9888ca",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Define your 3 targets (a, b, c)\nconst emails = [\n  \"abdelghanirahmani70@gmail.com\", \n  \"abdelghani.rahmani.wk@gmail.com\", \n  \"autowealthai.company@gmail.com\"\n];\n\n// 2. Shuffle them randomly\nemails.sort(() => Math.random() - 0.5);\n\n// 3. Output them as fixed keys (Target_1, Target_2, Target_3)\nreturn {\n  json: {\n    Target_1: emails[0],\n    Target_2: emails[1],\n    Target_3: emails[2]\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -336,
+        624
+      ],
+      "id": "58b23161-7fad-4883-951d-4769c00c6001",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -560,
+        624
+      ],
+      "id": "800b913f-50a3-4873-a841-c3e22fe5bca6",
+      "name": "When chat message received",
+      "webhookId": "d2ec10d9-6ff2-4d07-ba1d-11494069b321"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        848
+      ],
+      "id": "ab24dbb8-5cb3-487a-966b-f525564ee15e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  { \"subject\": \"Subject for email 1\", \"body\": \"Body text for email 1\" },\n  { \"subject\": \"Subject for email 2\", \"body\": \"Body text for email 2\" },\n  { \"subject\": \"Subject for email 3\", \"body\": \"Body text for email 3\" }\n]"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        32,
+        848
+      ],
+      "id": "466d2e6b-569f-4d23-bc7a-906fc03ce600",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "eb480a85-1770-4a4f-a06f-36b8e489c270",
+                    "leftValue": "={{ $json.accepted }}",
+                    "rightValue": "abdelghanirahmani70@gmail.com",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.accepted }}",
+                    "rightValue": "abdelghani.rahmani.wk@gmail.com",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    },
+                    "id": "716e9bbc-f98e-4009-bdbe-b346393bf8f6"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b8feebc3-590b-4224-af38-a8a95b2b90f4",
+                    "leftValue": "={{ $json.accepted }}",
+                    "rightValue": "autowealthai.company@gmail.com",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        912,
+        -496
+      ],
+      "id": "bb291735-6d81-452e-a088-3b2339902543",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Get message1').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1840,
+        -480
+      ],
+      "id": "716900d4-ad1f-4939-886a-66cc4c2a8c69",
+      "name": "Send Reply1",
+      "webhookId": "a6e27fc3-552e-467a-87cc-7e271cce9a8e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15.3,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        2128,
+        -480
+      ],
+      "id": "36a55180-a857-4340-b148-7fb8d95d2f3f",
+      "name": "Wait 2 Mins4",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Get message1').item.json.headers.from.extractEmail() }}",
+        "toEmail": "={{ $('Get message1').item.json.headers.to.extractEmail() }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Get message1').item.json.headers.to.extractEmail() }}"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2768,
+        -480
+      ],
+      "id": "9b59a746-40bc-47a0-b8c2-a9564860bf44",
+      "name": "Send support1",
+      "webhookId": "42acdb8e-7552-48af-9301-3f69832903cb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a professional assistant. Write 3 distinct business emails to a colleague asking for {{ $('When chat message received').item.json.chatInput }}.\n\nRequirements:\n1. Email 1 should be Casual.\n2. Email 2 should be Slightly Formal.\n3. Email 3 should be Short/Direct.\n4. Greeting must ALWAYS be exactly \"Hi,\" or \"Hello,\" (do not use names).\n5. Signature must ALWAYS be \"Rae\".\n6. Output ONLY valid JSON array. No markdown formatting, no code blocks, no extra text.\n\nFormat:\n[\n  { \"subject\": \"Subject for email 1\", \"body\": \"Body text for email 1\" },\n  { \"subject\": \"Subject for email 2\", \"body\": \"Body text for email 2\" },\n  { \"subject\": \"Subject for email 3\", \"body\": \"Body text for email 3\" }\n]",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -112,
+        624
+      ],
+      "id": "ff17c2f9-5ee1-48fb-b268-b9a36d9c258d",
+      "name": "Message crafter"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $json.from.value[0].address }}\nSubject: {{ $json.headers.subject }}\nBody Snippet: {{ $json.text }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree and ask for a time.\n2. If it is just info, say thanks.\n3. Keep it short (under 2 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1488,
+        -576
+      ],
+      "id": "1465003c-e8a6-43b4-824f-ee6ca186e198",
+      "name": "Reply by Gmail"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $('Get message1').item.json.headers.to }}\nBody Reply: {{ $('Reply by Gmail').item.json.output }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree.\n2. If it is just info, say thanks.\n3. Keep it short (under 4 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2416,
+        -576
+      ],
+      "id": "678bb586-112c-4b6a-ab43-62720db59b04",
+      "name": "Reply By SMTP"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2496,
+        -352
+      ],
+      "id": "22e7b555-17d4-4a2b-b1b3-53b5e0dcc29f",
+      "name": "Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Get message').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1840,
+        -880
+      ],
+      "id": "2941d3c6-856c-4477-b334-6a75f5810f9d",
+      "name": "Send Reply",
+      "webhookId": "a6e27fc3-552e-467a-87cc-7e271cce9a8e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Get message').item.json.headers.from.extractEmail() }}",
+        "toEmail": "={{ $('Get message').item.json.headers.to.extractEmail() }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Get message').item.json.headers.to.extractEmail() }}"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2768,
+        -880
+      ],
+      "id": "33697778-fdd1-4d10-ace6-2c4e728a7c1e",
+      "name": "Send support",
+      "webhookId": "42acdb8e-7552-48af-9301-3f69832903cb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $('Get message').item.json.headers.to }}\nBody Reply: {{ $('Reply by Gmail 70').item.json.output }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree.\n2. If it is just info, say thanks.\n3. Keep it short (under 4 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2416,
+        -976
+      ],
+      "id": "a7980dcb-928c-4d9c-9e0c-eab22ddb99f4",
+      "name": "Reply By SMTP1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2496,
+        -752
+      ],
+      "id": "9e3ab954-3f2f-4df2-b696-ea67a5a6b4be",
+      "name": "Gemini1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $json.from.value[0].address }}\nSubject: {{ $json.headers.subject }}\nBody Snippet: {{ $json.text }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree and ask for a time.\n2. If it is just info, say thanks.\n3. Keep it short (under 2 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1488,
+        -976
+      ],
+      "id": "6cea8d3b-9e5b-4103-b66f-248555c5d2b1",
+      "name": "Reply by Gmail 70"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Get message2').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1840,
+        -80
+      ],
+      "id": "61185613-db61-4f22-b85e-8cdfd90a6f8f",
+      "name": "Send Reply2",
+      "webhookId": "a6e27fc3-552e-467a-87cc-7e271cce9a8e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15.4,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        2128,
+        -80
+      ],
+      "id": "c7192641-f79d-41d1-b441-e290a9574049",
+      "name": "Wait 2 Mins6",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Get message2').item.json.headers.from.extractEmail() }}",
+        "toEmail": "={{ $('Get message2').item.json.headers.to.extractEmail() }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Get message2').item.json.headers.to.extractEmail() }}"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2768,
+        -80
+      ],
+      "id": "9af67e91-435c-46d3-84af-c3b6784d0320",
+      "name": "Send support2",
+      "webhookId": "42acdb8e-7552-48af-9301-3f69832903cb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $json.from.value[0].address }}\nSubject: {{ $json.headers.subject }}\nBody Snippet: {{ $json.text }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree and ask for a time.\n2. If it is just info, say thanks.\n3. Keep it short (under 2 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1488,
+        -176
+      ],
+      "id": "c7ea224a-228f-485c-ad34-c4480cdd241d",
+      "name": "Reply by Gmail1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $('Get message2').item.json.headers.to }}\nBody Reply: {{ $('Reply by Gmail1').item.json.output }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree.\n2. If it is just info, say thanks.\n3. Keep it short (under 4 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2416,
+        -176
+      ],
+      "id": "36d71c4a-094f-43b1-8abb-1da81fab872b",
+      "name": "Reply By SMTP2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2496,
+        48
+      ],
+      "id": "3db869a2-afec-4c1b-97df-ff51b4793a69",
+      "name": "Gemini2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "eb480a85-1770-4a4f-a06f-36b8e489c270",
+                    "leftValue": "={{ $json.accepted }}",
+                    "rightValue": "abdelghanirahmani70@gmail.com",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.accepted }}",
+                    "rightValue": "abdelghani.rahmani.wk@gmail.com",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    },
+                    "id": "716e9bbc-f98e-4009-bdbe-b346393bf8f6"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b8feebc3-590b-4224-af38-a8a95b2b90f4",
+                    "leftValue": "={{ $json.accepted }}",
+                    "rightValue": "autowealthai.company@gmail.com",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        688,
+        608
+      ],
+      "id": "23390e34-d6c7-4e33-88ca-550d4aeaf8de",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Get many messages3').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1552,
+        624
+      ],
+      "id": "d8cf6a70-cf43-4610-8784-b100538c449a",
+      "name": "Send Reply3",
+      "webhookId": "a6e27fc3-552e-467a-87cc-7e271cce9a8e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15.2,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        624
+      ],
+      "id": "464863a2-d400-48c2-b352-f3b32917ad81",
+      "name": "Wait 2 Mins7",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Get many messages3').item.json.headers.from.extractEmail() }}",
+        "toEmail": "={{ $('Get many messages3').item.json.headers.to.extractEmail() }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Get many messages3').item.json.headers.to.extractEmail() }}"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2480,
+        624
+      ],
+      "id": "35dd2b7f-e3e2-4776-995f-9c64d5fc3c29",
+      "name": "Send support3",
+      "webhookId": "42acdb8e-7552-48af-9301-3f69832903cb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "receivedBefore": "={{ $now }}",
+          "sender": "founder@autowealthai.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        624
+      ],
+      "id": "0b45e6e3-8aac-4277-ad7b-95eeca2489a8",
+      "name": "Get many messages3",
+      "webhookId": "9c631b47-6815-4ef4-a974-71e5171f7a67",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $json.from.value[0].address }}\nSubject: {{ $json.headers.subject }}\nBody Snippet: {{ $json.text }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree and ask for a time.\n2. If it is just info, say thanks.\n3. Keep it short (under 2 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1136,
+        528
+      ],
+      "id": "255f2aee-d172-4f7c-85f0-ebb551909d87",
+      "name": "Reply by Gmail2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $('Get many messages3').item.json.headers.to }}\nBody Reply: {{ $('Reply by Gmail2').item.json.output }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree.\n2. If it is just info, say thanks.\n3. Keep it short (under 4 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2064,
+        528
+      ],
+      "id": "da75f9ed-4813-42fe-956e-19e948466d55",
+      "name": "Reply By SMTP3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        752
+      ],
+      "id": "a9500933-5a8b-40ef-bcb5-67c39f4e32e6",
+      "name": "Gemini3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Get message3').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1552,
+        224
+      ],
+      "id": "5c03a706-d360-42c4-9d18-8532741093b0",
+      "name": "Send Reply4",
+      "webhookId": "a6e27fc3-552e-467a-87cc-7e271cce9a8e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15.5,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        224
+      ],
+      "id": "2f96d64c-8abd-45aa-95b6-3d4fd7d8776b",
+      "name": "Wait 2 Mins8",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Get message3').item.json.headers.from.extractEmail() }}",
+        "toEmail": "={{ $('Get message3').item.json.headers.to.extractEmail() }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Get message3').item.json.headers.to.extractEmail() }}"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2480,
+        224
+      ],
+      "id": "ce32bbc1-2cc5-479a-85fb-1780c50d84c3",
+      "name": "Send support4",
+      "webhookId": "42acdb8e-7552-48af-9301-3f69832903cb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        352
+      ],
+      "id": "206d6498-408f-4a0a-9f21-0374381d8af2",
+      "name": "Google Gemini Chat Model6",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $('Get message3').item.json.headers.to }}\nBody Reply: {{ $('Reply by Gmail ').item.json.output }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree.\n2. If it is just info, say thanks.\n3. Keep it short (under 4 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2064,
+        128
+      ],
+      "id": "68a452cd-2959-4bc3-8f4d-b19fca1a0a50",
+      "name": "Reply By SMTP4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        352
+      ],
+      "id": "79749ca7-d24e-4ec1-9cfc-bd8796a83c29",
+      "name": "Gemini4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $json.from.value[0].address }}\nSubject: {{ $json.headers.subject }}\nBody Snippet: {{ $json.text }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree and ask for a time.\n2. If it is just info, say thanks.\n3. Keep it short (under 2 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1136,
+        128
+      ],
+      "id": "b95f360a-d269-46dd-a018-928045d37c46",
+      "name": "Reply by Gmail "
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Get message4').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1552,
+        1024
+      ],
+      "id": "eb3a363a-f621-4ea2-a864-cc9c5c42bd73",
+      "name": "Send Reply5",
+      "webhookId": "a6e27fc3-552e-467a-87cc-7e271cce9a8e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15.1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        1024
+      ],
+      "id": "9997f5b6-d757-4bdf-a05c-1f843d91e026",
+      "name": "Wait 2 Mins9",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Get message4').item.json.headers.from.extractEmail() }}",
+        "toEmail": "={{ $('Get message4').item.json.headers.to.extractEmail() }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Get message4').item.json.headers.to.extractEmail() }}"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2480,
+        1024
+      ],
+      "id": "69d6b7f1-eb9a-417f-8cd8-8f51ae89219b",
+      "name": "Send support5",
+      "webhookId": "42acdb8e-7552-48af-9301-3f69832903cb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $json.from.value[0].address }}\nSubject: {{ $json.headers.subject }}\nBody Snippet: {{ $json.text }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree and ask for a time.\n2. If it is just info, say thanks.\n3. Keep it short (under 2 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1136,
+        928
+      ],
+      "id": "69cf674e-5e6b-47f4-8e1d-599324794d40",
+      "name": "Reply by Gmail3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $('Get message4').item.json.headers.to }}\nBody Reply: {{ $('Reply by Gmail3').item.json.output }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree.\n2. If it is just info, say thanks.\n3. Keep it short (under 4 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2064,
+        928
+      ],
+      "id": "af5d49e1-305c-4257-8adf-682ef377320f",
+      "name": "Reply By SMTP5"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        1152
+      ],
+      "id": "4f36fbce-4a77-4469-add6-9c28da8129ea",
+      "name": "Gemini5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "eb480a85-1770-4a4f-a06f-36b8e489c270",
+                    "leftValue": "={{ $json.accepted }}",
+                    "rightValue": "abdelghanirahmani70@gmail.com",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.accepted }}",
+                    "rightValue": "abdelghani.rahmani.wk@gmail.com",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    },
+                    "id": "716e9bbc-f98e-4009-bdbe-b346393bf8f6"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b8feebc3-590b-4224-af38-a8a95b2b90f4",
+                    "leftValue": "={{ $json.accepted }}",
+                    "rightValue": "autowealthai.company@gmail.com",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        688,
+        1808
+      ],
+      "id": "4dc35b7a-fa55-4b7e-b0b7-2fddf08a228e",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Get many messages6').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1552,
+        1824
+      ],
+      "id": "054b00a3-08b5-40c9-a8d4-89c050b9bdaa",
+      "name": "Send Reply6",
+      "webhookId": "a6e27fc3-552e-467a-87cc-7e271cce9a8e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15.45,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        1824
+      ],
+      "id": "f0af4606-4a55-4872-9962-a2718ef7d8d8",
+      "name": "Wait 2 Mins10",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Get many messages6').item.json.headers.from.extractEmail() }}",
+        "toEmail": "={{ $('Get many messages6').item.json.headers.to.extractEmail() }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Get many messages6').item.json.headers.to.extractEmail() }}"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2480,
+        1824
+      ],
+      "id": "14d7475c-25f1-49dd-a035-3e2f3793ecb5",
+      "name": "Send support6",
+      "webhookId": "42acdb8e-7552-48af-9301-3f69832903cb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "receivedBefore": "={{ $now }}",
+          "sender": "hello@autowealthai.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        1824
+      ],
+      "id": "9688ee42-a959-45e7-b81f-5c2da21ff5de",
+      "name": "Get many messages6",
+      "webhookId": "9c631b47-6815-4ef4-a974-71e5171f7a67",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $json.from.value[0].address }}\nSubject: {{ $json.headers.subject }}\nBody Snippet: {{ $json.text }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree and ask for a time.\n2. If it is just info, say thanks.\n3. Keep it short (under 2 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1136,
+        1728
+      ],
+      "id": "581ba9be-aa69-48a3-bf59-4575516f1dc2",
+      "name": "Reply by Gmail4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $('Get many messages6').item.json.headers.to }}\nBody Reply: {{ $('Reply by Gmail4').item.json.output }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree.\n2. If it is just info, say thanks.\n3. Keep it short (under 4 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2064,
+        1728
+      ],
+      "id": "2def2e65-3ce5-45e5-8dc5-22a1c7e18a3b",
+      "name": "Reply By SMTP6"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        1952
+      ],
+      "id": "0ff95eb2-3826-46a5-8312-d9d1054bcfc9",
+      "name": "Gemini6",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Get many messages7').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1552,
+        1424
+      ],
+      "id": "0a0c5bb9-f44e-4b60-beb1-6f70de69db49",
+      "name": "Send Reply7",
+      "webhookId": "a6e27fc3-552e-467a-87cc-7e271cce9a8e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15.4,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        1424
+      ],
+      "id": "67dc30d3-a9f0-45ed-95c9-8a39671da802",
+      "name": "Wait 2 Mins11",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Get many messages7').item.json.headers.from.extractEmail() }}",
+        "toEmail": "={{ $('Get many messages7').item.json.headers.to.extractEmail() }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Get many messages7').item.json.headers.to.extractEmail() }}"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2480,
+        1424
+      ],
+      "id": "20e961a3-9808-46da-920c-3f6bfe0e96fb",
+      "name": "Send support7",
+      "webhookId": "42acdb8e-7552-48af-9301-3f69832903cb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "receivedBefore": "={{ $now }}",
+          "sender": "hello@autowealthai.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        1424
+      ],
+      "id": "4935741c-cdf7-47bc-9ac6-a602cfe5e844",
+      "name": "Get many messages7",
+      "webhookId": "9c631b47-6815-4ef4-a974-71e5171f7a67",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $('Get many messages7').item.json.headers.to }}\nBody Reply: {{ $('Reply by Gmail 1').item.json.output }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree.\n2. If it is just info, say thanks.\n3. Keep it short (under 4 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2064,
+        1328
+      ],
+      "id": "4f3c93e8-1c99-437a-b3a0-02ef6e47b8e8",
+      "name": "Reply By SMTP7"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        1552
+      ],
+      "id": "e06c2c1a-6333-4100-9419-e68971fd203d",
+      "name": "Gemini7",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $json.from.value[0].address }}\nSubject: {{ $json.headers.subject }}\nBody Snippet: {{ $json.text }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree and ask for a time.\n2. If it is just info, say thanks.\n3. Keep it short (under 2 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1136,
+        1328
+      ],
+      "id": "36294653-d64b-4886-a4f6-fde71d8e1e9a",
+      "name": "Reply by Gmail 1"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "=19b308d7189f708e",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1552,
+        2224
+      ],
+      "id": "c15636a7-24e4-451d-ac2b-df30ced6e185",
+      "name": "Send Reply8",
+      "webhookId": "a6e27fc3-552e-467a-87cc-7e271cce9a8e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15.4,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        2224
+      ],
+      "id": "1226880d-5790-4f81-b195-2dcc0b69ab75",
+      "name": "Wait 2 Mins12",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $('Get many messages8').item.json.headers.from.extractEmail() }}",
+        "toEmail": "={{ $('Get many messages8').item.json.headers.to.extractEmail() }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Get many messages8').item.json.headers.to.extractEmail() }}"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2480,
+        2224
+      ],
+      "id": "79dec86a-7bba-40b6-a6df-be4f92ead16a",
+      "name": "Send support8",
+      "webhookId": "42acdb8e-7552-48af-9301-3f69832903cb",
+      "credentials": {
+        "smtp": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<SMTP>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        2448
+      ],
+      "id": "9cb0d046-5bd8-4e02-a255-64db675dd539",
+      "name": "Google Gemini Chat Model10",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "receivedBefore": "={{ $now }}",
+          "sender": "hello@autowealthai.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        2128
+      ],
+      "id": "1ad29e5e-57a7-47ca-b946-302deae2e99a",
+      "name": "Get many messages8",
+      "webhookId": "9c631b47-6815-4ef4-a974-71e5171f7a67",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $json.from.value[0].address }}\nSubject: {{ $json.headers.subject }}\nBody Snippet: {{ $json.text }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree and ask for a time.\n2. If it is just info, say thanks.\n3. Keep it short (under 2 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        1136,
+        2224
+      ],
+      "id": "afea96e2-442d-49d6-b14a-a551706a464a",
+      "name": "Reply by Gmail5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the owner of this personal email account.\n\nYou just received an email from: {{ $('Get many messages8').item.json.headers.to }}\nBody Reply: {{ $('Reply by Gmail5').item.json.output }}\n\nTask:\nWrite a natural, casual reply to this email.\n1. If they suggest a meeting, agree.\n2. If it is just info, say thanks.\n3. Keep it short (under 4 sentences).\n4. Do NOT include a subject line.\n5. Do NOT include a signature.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [
+        2064,
+        2224
+      ],
+      "id": "68de57b8-d044-407b-a5ac-093d2c711f3f",
+      "name": "Reply By SMTP8"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        2448
+      ],
+      "id": "2b0d4ce4-15d8-40ef-b852-cadcd9432380",
+      "name": "Gemini8",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        1552
+      ],
+      "id": "aad4631f-ab7f-4c28-b643-ee217d7deaae",
+      "name": "Gemini9",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        1152
+      ],
+      "id": "c86c4368-0933-483e-a4bc-8089bf273ffc",
+      "name": "Gemini10",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        752
+      ],
+      "id": "354c1603-8a0d-45e2-8c52-50bf79b8d0cf",
+      "name": "Gemini11",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        1952
+      ],
+      "id": "433a7b79-fa77-46ff-add8-79f4fb5b7495",
+      "name": "Gemini12",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        48
+      ],
+      "id": "5da1bcd6-554b-4c88-892f-2813c6291e40",
+      "name": "Gemini13",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        -352
+      ],
+      "id": "18018a3d-b6cf-462e-963a-ba5b82482233",
+      "name": "Gemini14",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        -752
+      ],
+      "id": "a36a3c1c-3e29-4c93-bee7-862d14e7641a",
+      "name": "Gemini15",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GOOGLEPALMAPI>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "receivedBefore": "={{ $now }}",
+          "sender": "support@autowealthai.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        -880
+      ],
+      "id": "c912cf38-edfd-4426-a2c6-db82aea0720d",
+      "name": "Get message",
+      "webhookId": "9c631b47-6815-4ef4-a974-71e5171f7a67",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "receivedBefore": "={{ $now }}",
+          "sender": "support@autowealthai.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        -480
+      ],
+      "id": "28aa27db-9fc9-435a-956a-a6515eea4975",
+      "name": "Get message1",
+      "webhookId": "9c631b47-6815-4ef4-a974-71e5171f7a67",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "receivedBefore": "={{ $now }}",
+          "sender": "support@autowealthai.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        -80
+      ],
+      "id": "5c623341-77fd-407a-8827-ee2b2a0651b5",
+      "name": "Get message2",
+      "webhookId": "9c631b47-6815-4ef4-a974-71e5171f7a67",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "receivedBefore": "={{ $now }}",
+          "sender": "founder@autowealthai.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        224
+      ],
+      "id": "68a8b288-f5ac-4b3e-8f5c-23ffce627b18",
+      "name": "Get message3",
+      "webhookId": "9c631b47-6815-4ef4-a974-71e5171f7a67",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 1,
+        "simple": false,
+        "filters": {
+          "receivedBefore": "={{ $now }}",
+          "sender": "founder@autowealthai.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        1024
+      ],
+      "id": "c8073429-5567-4e45-83d4-cd840527d4e0",
+      "name": "Get message4",
+      "webhookId": "9c631b47-6815-4ef4-a974-71e5171f7a67",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "<CREDENTIAL_ID>",
+          "name": "<GMAILOAUTH2>"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        688,
+        -480
+      ],
+      "id": "7e80b5d9-ef1c-458b-873c-2ccc1f1d11b3",
+      "name": "Wait 15 min",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        464,
+        624
+      ],
+      "id": "2f2078cf-1a55-4691-95d7-3096a54458ab",
+      "name": "Wait 15 min1",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "amount": 15,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        464,
+        1824
+      ],
+      "id": "0d3b765b-9f7b-479b-9fc7-7f5f731b66f3",
+      "name": "Wait 15 min2",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.myNewField = 1;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        464,
+        -480
+      ],
+      "id": "58acf0d8-044f-4888-97b8-d01ef08274f0",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "amount": 15.5,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        2128,
+        -880
+      ],
+      "id": "e455be92-6bb3-4848-a34a-be1961dae212",
+      "name": "15 min",
+      "webhookId": "a5f584e7-3cd9-411c-925c-bd43d9d20e99"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        912,
+        2320
+      ],
+      "id": "4ea259ab-fbdf-4385-9170-a21a4fb564af",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {
+    "When chat message received": [
+      {
+        "json": {
+          "sessionId": "909a0a20b8014921879fd151d3c54ad3",
+          "action": "sendMessage",
+          "chatInput": "second follow up for emily about AI receptionest"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Get many messages8": [
+      {
+        "json": {
+          "id": "19b308d7189f708e",
+          "threadId": "19b308d7189f708e",
+          "labelIds": [
+            "UNREAD",
+            "IMPORTANT",
+            "CATEGORY_PERSONAL",
+            "INBOX"
+          ],
+          "sizeEstimate": 5343,
+          "headers": {
+            "delivered-to": "Delivered-To: autowealthai.company@gmail.com",
+            "received": "Received: by mx.zohomail.com with SMTPS id 1766046131573639.0177463443856;\r\n\tThu, 18 Dec 2025 00:22:11 -0800 (PST)",
+            "x-google-smtp-source": "X-Google-Smtp-Source: AGHT+IE2oTE2Wy8YhE8tjP5OAcO7pAluVq+JPLeV/j5NJKpJgm6/rKgsL7rYOHmod4co+9wsxesf",
+            "x-received": "X-Received: by 2002:a17:902:e84f:b0:2a0:835b:d17f with SMTP id d9443c01a7336-2a0835bd8a3mr217183085ad.54.1766046134621;\r\n        Thu, 18 Dec 2025 00:22:14 -0800 (PST)",
+            "arc-seal": "ARC-Seal: i=1; a=rsa-sha256; t=1766046133; cv=none; \r\n\td=zohomail.com; s=zohoarc; \r\n\tb=UZEpUDoIRfKKB6kO/jdCTRo5etpaMKiV03AcOQRN9wLXrP8+diQ/KG3hHCREXBiPO932NBFlyoyKNTHTjBNjk6Wjb4tXfMNVEsbC5Y08zLbyp2GfFyK9nkiH9/1C4sKMx6TGCbz6LqK4/qe5fI8qZiO89YYLJnns4GL7vCCFikM=",
+            "arc-message-signature": "ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; \r\n\tt=1766046133; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; \r\n\tbh=yTohQVksutN2a57KIHr0hoHIWandB7V8r2dA5v34Lec=; \r\n\tb=HiYGJvPOasMIXv8mDIQ/LHp2XY35zZpSSzo51STmx/VQswv87NpmaaRdgcG/M3wrURhGg00nNaINCOYiXHWpcVBkxEBMhAKoAIIW64hjAHPdtV3HvCXZEw3JW0FftnRO2Jcy1fPMIjpN0jJzBgu/El12LyPdVjdeN56Rlx0KtWs=",
+            "arc-authentication-results": "ARC-Authentication-Results: i=1; mx.zohomail.com;\r\n\tdkim=pass  header.i=autowealthai.com;\r\n\tspf=pass  smtp.mailfrom=hello@autowealthai.com;\r\n\tdmarc=pass header.from=<hello@autowealthai.com>",
+            "return-path": "Return-Path: <hello@autowealthai.com>",
+            "received-spf": "Received-SPF: pass (google.com: domain of hello@autowealthai.com designates 136.143.188.14 as permitted sender) client-ip=136.143.188.14;",
+            "authentication-results": "Authentication-Results: mx.google.com;\r\n       dkim=pass header.i=@autowealthai.com header.s=zoho header.b=gnKvOtka;\r\n       arc=pass (i=1 spf=pass spfdomain=autowealthai.com dkim=pass dkdomain=autowealthai.com dmarc=pass fromdomain=autowealthai.com>);\r\n       spf=pass (google.com: domain of hello@autowealthai.com designates 136.143.188.14 as permitted sender) smtp.mailfrom=hello@autowealthai.com;\r\n       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=autowealthai.com",
+            "dkim-signature": "DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766046133;\r\n\ts=zoho; d=autowealthai.com; i=hello@autowealthai.com;\r\n\th=From:From:To:To:Subject:Subject:Message-ID:Content-Transfer-Encoding:Date:Date:MIME-Version:Content-Type:Message-Id:Reply-To:Cc;\r\n\tbh=yTohQVksutN2a57KIHr0hoHIWandB7V8r2dA5v34Lec=;\r\n\tb=gnKvOtkaFH23hYmiaPD5UuckBciV9ityeZbqAU1hHdJXEGVeOUAqm2YHhyWIdvbO\r\n\tM2NsfHUs3HkRt8SMoxpjRhhG/rJ6fR0ACYIwglXatm2iHnMm7Yx/tJMFjsthYNYhCC/\r\n\tRCwi/xWKPuOcQWMk+vnZE7jd3NlddG5//mnnlmMxArneVQ4iC9dZvsAf8cd3M7d+j+J\r\n\two3z1IrGFedyLJekXwQIoQk8UShiWpM5jvea239UK+w7xorR7THC3+XKIedz2rqVFCZ\r\n\tyzE7phOWXgne6one2ZYKK50SjuI6pqvunUYWGgKsicNTBUHJmX7P3NrM4XyuLRVSqEN\r\n\tjt7YlMOEyA==",
+            "from": "From: hello@autowealthai.com",
+            "to": "To: autowealthai.company@gmail.com",
+            "subject": "Subject: Re: Emily AI Receptionist Follow-up",
+            "message-id": "Message-ID: <c33f3643-8fc7-02d5-7cb9-999558c5fcbb@autowealthai.com>",
+            "content-transfer-encoding": "Content-Transfer-Encoding: 7bit",
+            "date": "Date: Thu, 18 Dec 2025 08:24:56 +0000",
+            "mime-version": "MIME-Version: 1.0",
+            "content-type": "Content-Type: text/plain; charset=utf-8",
+            "x-zohomailclient": "X-ZohoMailClient: External"
+          },
+          "text": "Hi,\n\nAny update on the second follow-up with Emily about the AI receptionist?\n\nThanks,\nRae\n",
+          "textAsHtml": "<p>Hi,</p><p>Any update on the second follow-up with Emily about the AI receptionist?</p><p>Thanks,<br/>Rae</p>",
+          "subject": "Re: Emily AI Receptionist Follow-up",
+          "date": "2025-12-18T08:24:56.000Z",
+          "to": {
+            "value": [
+              {
+                "address": "autowealthai.company@gmail.com",
+                "name": ""
+              }
+            ],
+            "html": "<span class=\"mp_address_group\"><a href=\"mailto:autowealthai.company@gmail.com\" class=\"mp_address_email\">autowealthai.company@gmail.com</a></span>",
+            "text": "autowealthai.company@gmail.com"
+          },
+          "from": {
+            "value": [
+              {
+                "address": "hello@autowealthai.com",
+                "name": ""
+              }
+            ],
+            "html": "<span class=\"mp_address_group\"><a href=\"mailto:hello@autowealthai.com\" class=\"mp_address_email\">hello@autowealthai.com</a></span>",
+            "text": "hello@autowealthai.com"
+          },
+          "messageId": "<c33f3643-8fc7-02d5-7cb9-999558c5fcbb@autowealthai.com>",
+          "html": false
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Reply by Gmail5": [
+      {
+        "json": {
+          "output": "Hi Rae, I haven't done that second follow-up with Emily yet. I'll get to it this week and let you know."
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Support email": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Founder email": {
+      "main": [
+        [
+          {
+            "node": "Wait 15 min1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hello email": {
+      "main": [
+        [
+          {
+            "node": "Wait 15 min2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Message crafter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Message crafter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Message crafter",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reply1": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 Mins4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 Mins4": {
+      "main": [
+        [
+          {
+            "node": "Reply By SMTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message crafter": {
+      "main": [
+        [
+          {
+            "node": "Founder email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Support email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Hello email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply by Gmail": {
+      "main": [
+        [
+          {
+            "node": "Send Reply1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply By SMTP": {
+      "main": [
+        [
+          {
+            "node": "Send support1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply By SMTP",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reply": {
+      "main": [
+        [
+          {
+            "node": "15 min",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply By SMTP1": {
+      "main": [
+        [
+          {
+            "node": "Send support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply By SMTP1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply by Gmail 70": {
+      "main": [
+        [
+          {
+            "node": "Send Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reply2": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 Mins6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 Mins6": {
+      "main": [
+        [
+          {
+            "node": "Reply By SMTP2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply by Gmail1": {
+      "main": [
+        [
+          {
+            "node": "Send Reply2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply By SMTP2": {
+      "main": [
+        [
+          {
+            "node": "Send support2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply By SMTP2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Get message3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get many messages3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reply3": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 Mins7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 Mins7": {
+      "main": [
+        [
+          {
+            "node": "Reply By SMTP3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages3": {
+      "main": [
+        [
+          {
+            "node": "Reply by Gmail2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply by Gmail2": {
+      "main": [
+        [
+          {
+            "node": "Send Reply3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply By SMTP3": {
+      "main": [
+        [
+          {
+            "node": "Send support3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply By SMTP3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reply4": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 Mins8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 Mins8": {
+      "main": [
+        [
+          {
+            "node": "Reply By SMTP4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply by Gmail ",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply By SMTP4": {
+      "main": [
+        [
+          {
+            "node": "Send support4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply By SMTP4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply by Gmail ": {
+      "main": [
+        [
+          {
+            "node": "Send Reply4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reply5": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 Mins9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 Mins9": {
+      "main": [
+        [
+          {
+            "node": "Reply By SMTP5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply by Gmail3": {
+      "main": [
+        [
+          {
+            "node": "Send Reply5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply By SMTP5": {
+      "main": [
+        [
+          {
+            "node": "Send support5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply By SMTP5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Get many messages7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get many messages6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get many messages8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reply6": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 Mins10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 Mins10": {
+      "main": [
+        [
+          {
+            "node": "Reply By SMTP6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages6": {
+      "main": [
+        [
+          {
+            "node": "Reply by Gmail4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply by Gmail4": {
+      "main": [
+        [
+          {
+            "node": "Send Reply6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply By SMTP6": {
+      "main": [
+        [
+          {
+            "node": "Send support6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply By SMTP6",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reply7": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 Mins11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 Mins11": {
+      "main": [
+        [
+          {
+            "node": "Reply By SMTP7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages7": {
+      "main": [
+        [
+          {
+            "node": "Reply by Gmail 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply By SMTP7": {
+      "main": [
+        [
+          {
+            "node": "Send support7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini7": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply By SMTP7",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply by Gmail 1": {
+      "main": [
+        [
+          {
+            "node": "Send Reply7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Reply8": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 Mins12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 Mins12": {
+      "main": [
+        [
+          {
+            "node": "Reply By SMTP8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model10": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply by Gmail5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages8": {
+      "main": [
+        [
+          {
+            "node": "Reply by Gmail5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply by Gmail5": {
+      "main": [
+        [
+          {
+            "node": "Send Reply8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply By SMTP8": {
+      "main": [
+        [
+          {
+            "node": "Send support8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini8": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply By SMTP8",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini9": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply by Gmail 1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini10": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply by Gmail3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini11": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply by Gmail2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini12": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply by Gmail4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini13": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply by Gmail1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini14": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply by Gmail",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini15": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Reply by Gmail 70",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get message": {
+      "main": [
+        [
+          {
+            "node": "Reply by Gmail 70",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get message1": {
+      "main": [
+        [
+          {
+            "node": "Reply by Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get message2": {
+      "main": [
+        [
+          {
+            "node": "Reply by Gmail1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get message3": {
+      "main": [
+        [
+          {
+            "node": "Reply by Gmail ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get message4": {
+      "main": [
+        [
+          {
+            "node": "Reply by Gmail3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 15 min": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 15 min1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 15 min2": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Wait 15 min",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "15 min": {
+      "main": [
+        [
+          {
+            "node": "Reply By SMTP1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Reply by Gmail5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "269b5ae3-a616-464d-93ac-0342f72ccf53",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c56975295062d25bdbb52f0b9af12677fc2da8b3662b5c9a20985df235d19b9d"
+  },
+  "id": "0zq5k3U8BI7rdAV5",
+  "tags": []
+}
